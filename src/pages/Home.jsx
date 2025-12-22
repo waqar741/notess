@@ -232,7 +232,22 @@ const Home = () => {
                 </div>
 
             </div>
-        </div>
+
+            {/* Footer */}
+            <footer className="border-t border-gray-100 dark:border-gray-700 mt-12 bg-white dark:bg-gray-800 transition-colors">
+                <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                        Built with ❤️ by <span className="text-primary font-bold">Ahmed</span>
+                    </p>
+                    <a
+                        href="/admin"
+                        className="text-xs font-semibold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 px-3 py-1.5 rounded-lg border border-transparent hover:border-gray-200 dark:hover:border-gray-600 transition-all"
+                    >
+                        Admin Portal
+                    </a>
+                </div>
+            </footer>
+        </div >
     );
 };
 
