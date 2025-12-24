@@ -18,6 +18,7 @@ const Home = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedClass, setSelectedClass] = useState(null);
     const [selectedSubject, setSelectedSubject] = useState(null);
+    const [sortBy, setSortBy] = useState('newest');
     const [isFilterOpen, setIsFilterOpen] = useState(false); // Mobile filter toggle
     const { theme, toggleTheme } = useTheme();
 
@@ -27,42 +28,70 @@ const Home = () => {
             .then(res => res.json())
             .then(data => {
                 setMaterials(data);
+                // Initial sort will happen in the next effect
                 setFilteredMaterials(data);
             })
             .catch(err => console.error("Failed to load materials", err));
     }, []);
 
     useEffect(() => {
-        let result = materials;
+        let result = [...materials]; // Create a copy to avoid mutating state
 
+        // 1. Filtering Logic
         if (searchQuery) {
             const lowerQuery = searchQuery.toLowerCase();
             result = result.filter(item =>
-                item.title.toLowerCase().includes(lowerQuery) ||
-                item.subject.toLowerCase().includes(lowerQuery)
+                (item.title && item.title.toLowerCase().includes(lowerQuery)) ||
+                (item.subject && item.subject.toLowerCase().includes(lowerQuery))
             );
         }
 
         if (selectedClass) {
             result = result.filter(item => {
-                // Support both new "standard": "10" and old "class": ["10"] formats for robustness
-                if (item.standard) return item.standard === selectedClass;
-                if (item.class && Array.isArray(item.class)) return item.class.includes(selectedClass);
+                if (!item.standard && !item.class) return false;
+                // Normalize both to strings for comparison
+                const itemStd = String(item.standard || '');
+                const targetStd = String(selectedClass);
+
+                if (itemStd === targetStd) return true;
+                if (item.class && Array.isArray(item.class)) {
+                    return item.class.some(c => String(c) === targetStd);
+                }
                 return false;
             });
         }
 
         if (selectedSubject) {
-            result = result.filter(item => item.subject === selectedSubject);
+            result = result.filter(item =>
+                item.subject && item.subject.toLowerCase() === selectedSubject.toLowerCase()
+            );
         }
 
+        // 2. Sorting Logic
+        result.sort((a, b) => {
+            switch (sortBy) {
+                case 'newest':
+                    // Sort by date desc, then by ID desc (as fallback for same dates)
+                    return new Date(b.date) - new Date(a.date) || (b.id - a.id);
+                case 'oldest':
+                    return new Date(a.date) - new Date(b.date) || (a.id - b.id);
+                case 'a-z':
+                    return a.title.localeCompare(b.title);
+                case 'z-a':
+                    return b.title.localeCompare(a.title);
+                default:
+                    return 0;
+            }
+        });
+
         setFilteredMaterials(result);
-    }, [searchQuery, selectedClass, selectedSubject, materials]);
+    }, [searchQuery, selectedClass, selectedSubject, materials, sortBy]);
 
     const clearFilters = () => {
         setSearchQuery('');
         setSelectedClass(null);
         setSelectedSubject(null);
+        setSortBy('newest');
     };
 
     return (
@@ -206,11 +235,25 @@ const Home = () => {
 
                 {/* Main Grid */}
                 <div className="lg:col-span-3">
-                    <div className="mb-6 flex items-center justify-between">
+                    <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                             {filteredMaterials.length} {filteredMaterials.length === 1 ? 'Note' : 'Notes'} Found
                         </h2>
-                        {/* Sorting dropdown could go here */}
+
+                        {/* Sort Dropdown */}
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
+                            <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Sort by:</span>
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+                            >
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="a-z">Title (A-Z)</option>
+                                <option value="z-a">Title (Z-A)</option>
+                            </select>
+                        </div>
                     </div>
 
                     {filteredMaterials.length > 0 ? (
