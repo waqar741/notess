@@ -2,19 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  background-color: #f3f4f6;
-  /* soft grey background */
-  color: #1f2937;
+/* Mobile optimizations */
+body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
 }
 
-.dark :root {
-  background-color: #111827;
-  /* dark gray background */
-  color: #f9fafb;
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-html.dark body {
-  background-color: #111827;
-  color: #f9fafb;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
