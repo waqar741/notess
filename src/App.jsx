@@ -5,7 +5,7 @@ import Admin from './pages/Admin';
 
 // --- CONFIG ---
 // TODO: User to update this number
-const WHATSAPP_NUMBER = "7021396917";
+const WHATSAPP_NUMBER = "7021396";
 const APP_TITLE = "Notes";
 
 // --- COMPONENTS ---
