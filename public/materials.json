@@ -171,12 +171,21 @@
         "url": "/materials/class10/science/Science Chapter 8 and 10 Set 1 to 5 Papers and Answer.pdf"
     },
     {
-  "id": 1774692388003,
-  "title": "6th Science Chapter 16 sets 2",
-  "standard": "6",
-  "subject": "Science",
-  "type": "PDF",
-  "date": "2026-03-28",
-  "url": "/materials/class6/science/6th Science Chapter 16 sets 2.pdf"
-}
+     "id": 1774692388003,
+    "title": "6th Science Chapter 16 sets 2",
+     "standard": "6",
+     "subject": "Science",
+     "type": "PDF",
+     "date": "2026-03-28",
+     "url": "/materials/class6/science/6th Science Chapter 16 sets 2.pdf"
+    },
+    {
+     "id": 1774692940589,
+     "title": "8th Science Chapter 19 sets 2",
+     "standard": "8",
+     "subject": "Science",
+     "type": "PDF",
+     "date": "2026-03-28",
+     "url": "/materials/class8/science/8th Science Chapter 19 sets 2.pdf"
+    }
 ]
