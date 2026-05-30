@@ -1,71 +1,60 @@
-# SmartNotes (NotesWeb)
+# Customer Support Ticketing CRM (ApexSupport)
 
-A modern, responsive web application for students to access class notes, question papers, and study materials. Includes a built-in Admin Dashboard for managing content metadata.
+Welcome to the **ApexSupport CRM** ticketing portal workspace. This monorepo contains both the Node.js/Express API backend and the Vite/React/Tailwind CSS frontend client.
 
-![SmartNotes App](/android-chrome-192x192.png)
-
-## Features
-
-- **Student Interface**
-  - 📱 **Mobile-First Design**: Optimized for all screen sizes.
-  - 🔍 **Search & Filter**: Quickly find notes by title, keyword, class standard, or subject.
-  - 🌙 **Dark Mode**: Built-in dark theme support for comfortable reading at night.
-  - ⬇️ **Direct Download**: View or download PDF materials instantly.
-
-- **Admin Dashboard**
-  - 🛠 **JSON Generator**: Easy-to-use form to generate metadata entries for new files.
-  - 📋 **One-Click Copy**: Copy generated JSON to clipboard for easy updating of `materials.json`.
-  - 🌗 **Theme Support**: Consistent dark mode styling.
-
-## Tech Stack
-
-- **Framework**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Routing**: [React Router DOM](https://reactrouter.com/)
+---
 
 ## Getting Started
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/waqar741/notess.git
-    cd notess
-    ```
+To launch the fullstack application, you need to start **both** the backend and the frontend development servers.
 
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
+### Method 1: Concurrent Startup (Recommended)
 
-3.  **Run the development server**
-    ```bash
-    npm run dev
-    ```
+You can run both servers simultaneously using a single command from this root directory:
 
-## Managing Content
+1. **Install all dependencies** for both the backend and frontend:
+   ```bash
+   npm run install:all
+   ```
 
-The content is managed via a JSON file.
+2. **Boot both development servers** concurrently:
+   ```bash
+   npm run dev
+   ```
 
-1.  **Place Files**: Drop your PDF files into the `public/materials/` directory. Recommended structure: `public/materials/class{standard}/{subject}/{filename}`.
-2.  **Generate Entry**:
-    - Go to `/admin` in your browser (e.g., `http://localhost:5173/admin`).
-    - Fill in the details (Class, Subject, Title, Filename).
-    - Click "Copy Code".
-3.  **Update Database**:
-    - Open `public/materials.json`.
-    - Paste the copied JSON object into the array.
-    - Save the file. The website will update instantly.
+The console will boot:
+- The **Backend API** at `http://localhost:5000`
+- The **Frontend Dashboard** at `http://localhost:5173`
 
-## Project Structure
+---
 
+### Method 2: Manual Startup (Separate Terminals)
+
+If you prefer to run them in separate shell sessions:
+
+#### 1. Start the Backend API
+Navigate to the `/backend` folder and run:
+```bash
+cd backend
+npm install
+npm run dev
 ```
-├── public/
-│   ├── materials/       # PDF storage folder
-│   └── materials.json   # Data source for the app
-├── src/
-│   ├── components/      # Reusable UI components (NoteCard)
-│   ├── hooks/           # Custom hooks (useTheme)
-│   ├── pages/           # Page components (Home, Admin)
-│   └── index.css        # Global styles & Tailwind
-└── README.md
+
+#### 2. Start the Frontend Client
+Open a new terminal window, navigate to the `/frontend` folder and run:
+```bash
+cd frontend
+npm install
+npm run dev
 ```
+
+---
+
+## Environment Variables
+
+Make sure the following variables match (or are set to default values):
+
+- **Backend** (`backend/.env`):
+  `CLIENT_URL=http://localhost:5173` (to permit frontend CORS calls)
+- **Frontend** (`frontend/.env`):
+  `VITE_API_URL=http://localhost:5000/api` (to direct API requests to the backend)
